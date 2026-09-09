@@ -1,0 +1,35 @@
+services:
+  carshare-db:
+    image: postgis/postgis:16-3.5
+    container_name: carshare-postgres
+    environment:
+      POSTGRES_DB: carshare_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - carshare_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d carshare_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  carshare-api:
+    container_name: carshare-api
+    build:
+      context: .
+      dockerfile: src/CarShare.API/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: Host=carshare-db;Port=5432;Database=carshare_db;Username=postgres;Password=postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      carshare-db:
+        condition: service_healthy
+
+volumes:
+  carshare_postgres_data:

@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28780DEE-E1D6-4DEC-B17E-A4E54CD0E0E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShare.Domain", "src\CarShare.Domain\CarShare.Domain.csproj", "{67F3B1FA-114F-40B2-B479-949A3905F704}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShare.Application", "src\CarShare.Application\CarShare.Application.csproj", "{48A6CB9E-A19E-46BD-847D-9D8107E8D067}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShare.Infrastructure", "src\CarShare.Infrastructure\CarShare.Infrastructure.csproj", "{DCE8298D-FB46-44E0-8805-AEA1500E416D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShare.API", "src\CarShare.API\CarShare.API.csproj", "{B5805B38-0971-4F61-9069-6B4CD9660A04}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BB5F158F-5FA2-4EC2-B40D-3E3527F522F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShare.Application.Tests", "tests\CarShare.Application.Tests\CarShare.Application.Tests.csproj", "{CD8E1598-90B4-4635-933F-E37C765F4983}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67F3B1FA-114F-40B2-B479-949A3905F704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67F3B1FA-114F-40B2-B479-949A3905F704}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67F3B1FA-114F-40B2-B479-949A3905F704}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67F3B1FA-114F-40B2-B479-949A3905F704}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48A6CB9E-A19E-46BD-847D-9D8107E8D067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48A6CB9E-A19E-46BD-847D-9D8107E8D067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48A6CB9E-A19E-46BD-847D-9D8107E8D067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48A6CB9E-A19E-46BD-847D-9D8107E8D067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE8298D-FB46-44E0-8805-AEA1500E416D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE8298D-FB46-44E0-8805-AEA1500E416D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE8298D-FB46-44E0-8805-AEA1500E416D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE8298D-FB46-44E0-8805-AEA1500E416D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5805B38-0971-4F61-9069-6B4CD9660A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5805B38-0971-4F61-9069-6B4CD9660A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5805B38-0971-4F61-9069-6B4CD9660A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5805B38-0971-4F61-9069-6B4CD9660A04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD8E1598-90B4-4635-933F-E37C765F4983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD8E1598-90B4-4635-933F-E37C765F4983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD8E1598-90B4-4635-933F-E37C765F4983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD8E1598-90B4-4635-933F-E37C765F4983}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67F3B1FA-114F-40B2-B479-949A3905F704} = {28780DEE-E1D6-4DEC-B17E-A4E54CD0E0E0}
+		{48A6CB9E-A19E-46BD-847D-9D8107E8D067} = {28780DEE-E1D6-4DEC-B17E-A4E54CD0E0E0}
+		{DCE8298D-FB46-44E0-8805-AEA1500E416D} = {28780DEE-E1D6-4DEC-B17E-A4E54CD0E0E0}
+		{B5805B38-0971-4F61-9069-6B4CD9660A04} = {28780DEE-E1D6-4DEC-B17E-A4E54CD0E0E0}
+		{CD8E1598-90B4-4635-933F-E37C765F4983} = {BB5F158F-5FA2-4EC2-B40D-3E3527F522F1}
+	EndGlobalSection
+EndGlobal
