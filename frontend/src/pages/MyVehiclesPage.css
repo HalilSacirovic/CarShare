@@ -1,0 +1,74 @@
+.my-vehicle-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.my-vehicle-card .manage-availability-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 10px;
+  color: #ffffff !important;
+  background: #274536 !important;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.my-vehicle-card .manage-availability-button:hover {
+  color: #ffffff !important;
+  background: #183126 !important;
+  transform: translateY(-1px);
+}
+
+.my-vehicle-card .delete-vehicle-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 11px 16px;
+  border: 1px solid #b95f3d !important;
+  border-radius: 10px;
+  color: #a4492e !important;
+  background: transparent !important;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.my-vehicle-card .delete-vehicle-button:hover {
+  color: #ffffff !important;
+  background: #b95f3d !important;
+}
+
+.my-vehicle-card .delete-vehicle-button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.owner-action-message {
+  margin: 22px 0;
+  padding: 14px 18px;
+  border-radius: 11px;
+  font-weight: 600;
+}
+
+.owner-action-message.success {
+  border: 1px solid rgba(39, 69, 54, 0.2);
+  color: #274536;
+  background: #e8efe9;
+}

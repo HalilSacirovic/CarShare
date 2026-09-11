@@ -1,0 +1,40 @@
+.reservation-estimate {
+  display: grid;
+  gap: 10px;
+  margin: 4px 0 8px;
+  padding: 14px;
+  border: 1px solid #ddd8cc;
+  border-radius: 12px;
+  background: #f8f5ed;
+}
+
+.reservation-estimate span {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  color: #6d695f;
+  font-size: 0.84rem;
+}
+
+.reservation-estimate span svg {
+  color: #a88c50;
+}
+
+.reservation-estimate strong {
+  color: #183126;
+}
+
+.reservation-estimate small {
+  color: #827d72;
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.reservation-payment-note {
+  display: block;
+  margin-top: 16px;
+  color: #858077;
+  line-height: 1.55;
+  text-align: center;
+}

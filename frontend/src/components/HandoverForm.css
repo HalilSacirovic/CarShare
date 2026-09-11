@@ -1,0 +1,126 @@
+    .handover-section {
+  margin-top: 14px;
+}
+
+.open-handover-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 17px;
+  border: 1px solid #a88c50;
+  border-radius: 10px;
+  color: #715c2d;
+  background: #f8f1df;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.open-handover-button:hover {
+  color: white;
+  background: #a88c50;
+}
+
+.handover-form {
+  display: grid;
+  gap: 13px;
+  padding: 18px;
+  border: 1px solid #ded7c9;
+  border-radius: 14px;
+  background: #f8f5ed;
+}
+
+.handover-form h3,
+.handover-form p {
+  margin: 0;
+}
+
+.handover-form h3 {
+  color: #183126;
+  font-family: "Playfair Display", serif;
+}
+
+.handover-form p {
+  color: #79746a;
+  font-size: 0.78rem;
+}
+
+.handover-form label {
+  display: grid;
+  gap: 7px;
+}
+
+.handover-form label span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #454a45;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.handover-form input {
+  padding: 11px;
+  border: 1px solid #d4cec1;
+  border-radius: 9px;
+  background: white;
+  font: inherit;
+}
+
+.handover-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.handover-buttons button {
+  padding: 10px;
+  border-radius: 9px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.handover-cancel-button {
+  border: 1px solid #cbc5b9;
+  color: #5f5c56;
+  background: transparent;
+}
+
+.handover-confirm-button {
+  border: 0;
+  color: white;
+  background: #274536;
+}
+
+.handover-confirm-button:hover {
+  color: white;
+  background: #183126;
+}
+
+.handover-confirmed,
+.handover-message {
+  margin-top: 11px;
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 0.8rem;
+}
+
+.handover-confirmed,
+.handover-message.success {
+  color: #274536;
+  background: #e8f1e9;
+}
+
+.handover-confirmed {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+}
+
+.handover-message.error {
+  color: #a4492e;
+  background: #fff0eb;
+}

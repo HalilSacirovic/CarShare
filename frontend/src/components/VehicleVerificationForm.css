@@ -1,0 +1,74 @@
+.vehicle-verification-form {
+  display: grid;
+  gap: 13px;
+  margin-top: 17px;
+  padding: 16px;
+  border: 1px solid #e4ddd1;
+  border-radius: 13px;
+  background: #f8f4ec;
+}
+
+.vehicle-verification-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #274536;
+}
+
+.vehicle-verification-heading div {
+  display: grid;
+  gap: 3px;
+}
+
+.vehicle-verification-heading strong {
+  font-size: 14px;
+}
+
+.vehicle-verification-heading span {
+  color: #777b73;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.vehicle-verification-form > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 15px;
+  border: 1px solid #274536;
+  border-radius: 10px;
+  color: #fff;
+  background: #274536;
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.vehicle-verification-form > button:hover {
+  color: #fff;
+  background: #183126;
+}
+
+.vehicle-verification-form > button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vehicle-verification-message {
+  padding: 10px 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.vehicle-verification-message.success {
+  color: #205338;
+  background: #e4f0e6;
+}
+
+.vehicle-verification-message.error {
+  color: #9f462f;
+  background: #fde8e1;
+}

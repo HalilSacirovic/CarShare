@@ -1,0 +1,272 @@
+.admin-disputes-page {
+  min-height: 100vh;
+  color: #20271f;
+  background: #f5f1e8;
+}
+
+.admin-disputes-container {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 70px 0 100px;
+}
+
+.admin-disputes-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 42px;
+}
+
+.admin-disputes-icon {
+  display: grid;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border-radius: 16px;
+  color: #fffdf8;
+  background: #274536;
+}
+
+.admin-disputes-heading h1 {
+  margin: 8px 0 8px;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(38px, 6vw, 62px);
+  line-height: 1;
+}
+
+.admin-disputes-heading p:last-child {
+  margin: 0;
+  color: #74786f;
+}
+
+.admin-disputes-list {
+  display: grid;
+  gap: 24px;
+}
+
+.admin-dispute-card {
+  padding: 28px;
+  border: 1px solid #e2ddd2;
+  border-radius: 20px;
+  background: #fffdf8;
+  box-shadow: 0 18px 45px rgb(45 55 42 / 8%);
+}
+
+.admin-dispute-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #ece6dc;
+}
+
+.admin-dispute-top h2 {
+  margin: 14px 0 0;
+  font-family: "Playfair Display", serif;
+  font-size: 30px;
+}
+
+.admin-dispute-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #9f4e32;
+  background: #fbe4d9;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-dispute-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #74786f;
+  font-size: 14px;
+}
+
+.admin-dispute-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f5f1e8;
+}
+
+.admin-dispute-avatar {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fffdf8;
+  background: #274536;
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.admin-dispute-user > div:last-child {
+  display: grid;
+  gap: 4px;
+}
+
+.admin-dispute-user span,
+.admin-dispute-user small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #777b72;
+}
+
+.admin-dispute-user strong {
+  font-size: 17px;
+}
+
+.admin-dispute-details {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.admin-dispute-details > div {
+  padding: 17px;
+  border: 1px solid #ebe5da;
+  border-radius: 13px;
+}
+
+.admin-dispute-details span {
+  display: block;
+  margin-bottom: 6px;
+  color: #8a8d84;
+  font-size: 13px;
+}
+
+.admin-dispute-details strong,
+.admin-dispute-details p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.admin-decision-field {
+  display: grid;
+  gap: 9px;
+  color: #293229;
+  font-weight: 800;
+}
+
+.admin-decision-field textarea {
+  min-height: 115px;
+  padding: 15px;
+  border: 1px solid #dcd6ca;
+  border-radius: 13px;
+  color: #20271f;
+  background: #fff;
+  font: inherit;
+  font-weight: 400;
+  resize: vertical;
+  outline: none;
+}
+
+.admin-decision-field textarea:focus {
+  border-color: #a88c50;
+  box-shadow: 0 0 0 3px rgb(168 140 80 / 14%);
+}
+
+.admin-dispute-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.admin-dispute-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 19px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-reject-dispute {
+  border: 1px solid #b95f3d;
+  color: #a84f32;
+  background: #fffdf8;
+}
+
+.admin-reject-dispute:hover {
+  color: #fff;
+  background: #b95f3d;
+}
+
+.admin-resolve-dispute {
+  border: 1px solid #274536;
+  color: #fff;
+  background: #274536;
+}
+
+.admin-resolve-dispute:hover {
+  background: #183126;
+}
+
+.admin-dispute-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-disputes-empty {
+  display: grid;
+  place-items: center;
+  padding: 65px 30px;
+  border: 1px solid #e2ddd2;
+  border-radius: 20px;
+  color: #668071;
+  text-align: center;
+  background: #fffdf8;
+}
+
+.admin-disputes-empty h2 {
+  margin: 16px 0 7px;
+  color: #20271f;
+  font-family: "Playfair Display", serif;
+  font-size: 29px;
+}
+
+.admin-disputes-empty p {
+  margin: 0;
+  color: #74786f;
+}
+
+@media (max-width: 700px) {
+  .admin-disputes-container {
+    width: min(100% - 24px, 1120px);
+    padding-top: 42px;
+  }
+
+  .admin-disputes-heading,
+  .admin-dispute-top {
+    flex-direction: column;
+  }
+
+  .admin-dispute-card {
+    padding: 20px;
+  }
+
+  .admin-dispute-actions {
+    flex-direction: column;
+  }
+
+  .admin-dispute-actions button {
+    width: 100%;
+  }
+}

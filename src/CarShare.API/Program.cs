@@ -1,36 +1,58 @@
-﻿using CarShare.Application;
-using CarShare.API.Exceptions;
-using CarShare.Infrastructure;
+﻿using System.Text;
 using Asp.Versioning;
-using System.Text;
+using CarShare.API.Exceptions;
+using CarShare.API.Middleware;
+using CarShare.API.Services;
+using CarShare.Application;
+using CarShare.Application.Common.Interfaces;
+using CarShare.Infrastructure;
 using CarShare.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using CarShare.API.Services;
-using CarShare.Application.Common.Interfaces;
-using CarShare.API.Middleware;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var uploadsDirectory = Path.Combine(
+    builder.Environment.ContentRootPath,
+    "wwwroot",
+    "uploads");
+
+Directory.CreateDirectory(uploadsDirectory);
+
 builder.Host.UseSerilog((context, configuration) =>
 {
     configuration
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .WriteTo.File(
-        "Logs/carshare-.log",
-        rollingInterval: RollingInterval.Day);
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .WriteTo.File(
+            "Logs/carshare-.log",
+            rollingInterval: RollingInterval.Day);
 });
 
-// Add services to the container.
-
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "Frontend",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddInfrastructure(
+    builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(
@@ -53,7 +75,8 @@ builder.Services.AddSwaggerGen(options =>
                 {
                     Reference = new OpenApiReference
                     {
-                        Type = ReferenceType.SecurityScheme,
+                        Type =
+                            ReferenceType.SecurityScheme,
                         Id = "Bearer"
                     }
                 },
@@ -61,15 +84,21 @@ builder.Services.AddSwaggerGen(options =>
             }
         });
 });
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
 
+builder.Services.AddExceptionHandler<
+    GlobalExceptionHandler>();
+
+builder.Services.AddProblemDetails();
 
 builder.Services
     .AddApiVersioning(options =>
     {
-        options.DefaultApiVersion = new ApiVersion(1, 0);
-        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.DefaultApiVersion =
+            new ApiVersion(1, 0);
+
+        options.AssumeDefaultVersionWhenUnspecified =
+            true;
+
         options.ReportApiVersions = true;
     })
     .AddMvc()
@@ -86,7 +115,8 @@ var jwtSettings = builder.Configuration
         "JWT podešavanja nisu pronađena.");
 
 builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddAuthentication(
+        JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters =
@@ -99,10 +129,13 @@ builder.Services
                 ValidAudience = jwtSettings.Audience,
 
                 ValidateLifetime = true,
+
                 ValidateIssuerSigningKey = true,
 
-                IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtSettings.Key)),
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            jwtSettings.Key)),
 
                 ClockSkew = TimeSpan.Zero
             };
@@ -117,9 +150,11 @@ builder.Services.AddScoped<
     CurrentUserService>();
 
 var app = builder.Build();
+
 app.UseSerilogRequestLogging();
+
 app.UseExceptionHandler();
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -128,13 +163,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseCors("Frontend");
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
-app.UseMiddleware<AvailabilityOverlapGuardMiddleware>();
-
+app.UseMiddleware<
+    AvailabilityOverlapGuardMiddleware>();
 
 app.MapControllers();
 

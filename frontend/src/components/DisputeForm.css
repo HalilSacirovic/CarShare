@@ -1,0 +1,178 @@
+.open-dispute-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 11px 18px;
+  border: 1px solid #b95f3d;
+  border-radius: 10px;
+  color: #9f4e32;
+  background: #fffdf8;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.open-dispute-button:hover {
+  color: #fffdf8;
+  background: #b95f3d;
+}
+
+.dispute-form-container {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1px solid #e3d7c7;
+  border-radius: 14px;
+  background: #fffaf2;
+}
+
+.dispute-form-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.dispute-form-heading > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #9f4e32;
+}
+
+.dispute-form-heading strong,
+.dispute-form-heading span {
+  display: block;
+}
+
+.dispute-form-heading span {
+  margin-top: 4px;
+  color: #706b63;
+  font-size: 14px;
+}
+
+.close-dispute-button {
+  border: 0;
+  color: #706b63;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.close-dispute-button:hover {
+  color: #b95f3d;
+}
+
+.dispute-form {
+  display: grid;
+  gap: 9px;
+}
+
+.dispute-form label {
+  margin-top: 5px;
+  color: #292d28;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.dispute-form select,
+.dispute-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #dcd4c8;
+  border-radius: 10px;
+  color: #292d28;
+  background: #ffffff;
+  font: inherit;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.dispute-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.dispute-form select:focus,
+.dispute-form textarea:focus {
+  border-color: #a88c50;
+  box-shadow: 0 0 0 3px rgba(168, 140, 80, 0.14);
+}
+
+.dispute-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cancel-dispute-button,
+.submit-dispute-button {
+  padding: 11px 17px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancel-dispute-button {
+  border: 1px solid #d8d0c4;
+  color: #4d504b;
+  background: #ffffff;
+}
+
+.cancel-dispute-button:hover {
+  background: #f1ece3;
+}
+
+.submit-dispute-button {
+  border: 1px solid #b95f3d;
+  color: #ffffff;
+  background: #b95f3d;
+}
+
+.submit-dispute-button:hover {
+  background: #9f4e32;
+}
+
+.submit-dispute-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.dispute-message {
+  margin-top: 14px;
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.dispute-message.success {
+  color: #1f5138;
+  background: #e7f2e9;
+}
+
+.dispute-message.error {
+  color: #9f402d;
+  background: #fde9e3;
+}
+
+@media (max-width: 650px) {
+  .dispute-form-heading {
+    flex-direction: column;
+  }
+
+  .dispute-form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-dispute-button,
+  .submit-dispute-button {
+    width: 100%;
+  }
+}
