@@ -1,6 +1,9 @@
 **/bin
 **/obj
-.vs
-.git
-Logs
-docker-build.txt
+**/node_modules
+**/.git
+**/.vs
+**/.vscode
+**/Logs
+**/wwwroot/uploads
+frontend/dist

@@ -7,7 +7,10 @@ using CarShare.Application;
 using CarShare.Application.Common.Interfaces;
 using CarShare.Infrastructure;
 using CarShare.Infrastructure.Authentication;
+using CarShare.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -33,6 +36,20 @@ builder.Host.UseSerilog((context, configuration) =>
 
 builder.Services.AddControllers();
 
+var allowedOriginsSetting =
+    builder.Configuration["AllowedOrigins"];
+
+var allowedOrigins =
+    string.IsNullOrWhiteSpace(allowedOriginsSetting)
+        ? new[]
+        {
+            "http://localhost:5173"
+        }
+        : allowedOriginsSetting.Split(
+            ',',
+            StringSplitOptions.RemoveEmptyEntries |
+            StringSplitOptions.TrimEntries);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -40,11 +57,22 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173")
+                .WithOrigins(allowedOrigins)
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
 });
+
+builder.Services.Configure<ForwardedHeadersOptions>(
+    options =>
+    {
+        options.ForwardedHeaders =
+            ForwardedHeaders.XForwardedFor |
+            ForwardedHeaders.XForwardedProto;
+
+        options.KnownNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
 
 builder.Services.AddApplication();
 
@@ -151,6 +179,17 @@ builder.Services.AddScoped<
 
 var app = builder.Build();
 
+await using (var scope =
+    app.Services.CreateAsyncScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<CarShareDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+}
+
+app.UseForwardedHeaders();
+
 app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
@@ -159,9 +198,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+    app.UseHttpsRedirection();
+}
 
 app.UseStaticFiles();
 
