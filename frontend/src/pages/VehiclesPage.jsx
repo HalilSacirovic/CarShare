@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  CalendarCheck,
   CalendarDays,
+  Car,
   Gauge,
   Heart,
+  KeyRound,
   LogOut,
   MapPin,
+  Search as SearchIcon,
   ShieldCheck,
   Users,
 } from "lucide-react";
 
 import api from "../api/api";
 import VehicleSearchForm from "../components/VehicleSearchForm";
+import "./VehiclesInfoSections.css";
 
 const fallbackImages = [
   "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=85",
@@ -300,92 +305,224 @@ function VehiclesPage() {
           )}
 
           <div className="vehicle-grid">
-            {vehicles.map((vehicle, index) => (
-              <article
-                className="vehicle-card"
-                key={vehicle.id}
-              >
-                <div className="vehicle-photo">
-                  <img
-                    src={getVehicleImage(
-                      vehicle,
-                      index
-                    )}
-                    alt={`${vehicle.brand} ${vehicle.model}`}
-                  />
+            {vehicles.map((vehicle, index) => {
+              const ownerRating = Number(
+                vehicle.ownerAverageRating ?? 0
+              );
 
-                  <span className="availability-badge">
-                    Dostupno
-                  </span>
+              return (
+                <article
+                  className="vehicle-card"
+                  key={vehicle.id}
+                >
+                  <div className="vehicle-photo">
+                    <img
+                      src={getVehicleImage(
+                        vehicle,
+                        index
+                      )}
+                      alt={`${vehicle.brand} ${vehicle.model}`}
+                    />
 
-                  <button
-                    type="button"
-                    className="favorite-button"
-                    aria-label="Dodaj u omiljena"
-                  >
-                    <Heart size={19} />
-                  </button>
-                </div>
-
-                <div className="vehicle-details">
-                  <div className="vehicle-title-row">
-                    <div>
-                      <h3>
-                        {vehicle.brand}{" "}
-                        {vehicle.model}
-                      </h3>
-
-                      <p>{vehicle.year}. godište</p>
-                    </div>
-
-                    <span className="rating">
-                      ★ 4.9
+                    <span className="availability-badge">
+                      Dostupno
                     </span>
-                  </div>
-
-                  <div className="vehicle-location">
-                    <MapPin size={16} />
-                    {vehicle.address}
-                  </div>
-
-                  <div className="vehicle-specifications">
-                    <span>
-                      <Users size={16} />
-                      {vehicle.seatCount} sedišta
-                    </span>
-
-                    <span>
-                      <Gauge size={16} />
-                      {Number(
-                        vehicle.mileage ?? 0
-                      ).toLocaleString()}{" "}
-                      km
-                    </span>
-                  </div>
-
-                  <div className="vehicle-footer">
-                    <div className="vehicle-price">
-                      <strong>
-                        {vehicle.pricePerDay ?? "—"} €
-                      </strong>
-
-                      <span>/ dan</span>
-                    </div>
 
                     <button
                       type="button"
-                      onClick={() =>
-                        navigate(
-                          `/vehicles/${vehicle.id}`
-                        )
-                      }
+                      className="favorite-button"
+                      aria-label="Dodaj u omiljena"
                     >
-                      Pogledaj vozilo
+                      <Heart size={19} />
                     </button>
                   </div>
-                </div>
-              </article>
-            ))}
+
+                  <div className="vehicle-details">
+                    <div className="vehicle-title-row">
+                      <div>
+                        <h3>
+                          {vehicle.brand}{" "}
+                          {vehicle.model}
+                        </h3>
+
+                        <p>
+                          {vehicle.year}. godište
+                        </p>
+                      </div>
+
+                      <span
+                        className="rating"
+                        title="Prosečna ocena vlasnika"
+                      >
+                        {ownerRating > 0
+                          ? `★ ${ownerRating.toFixed(1)}`
+                          : "Nema ocena"}
+                      </span>
+                    </div>
+
+                    <div className="vehicle-location">
+                      <MapPin size={16} />
+                      {vehicle.address}
+                    </div>
+
+                    <div className="vehicle-specifications">
+                      <span>
+                        <Users size={16} />
+                        {vehicle.seatCount} sedišta
+                      </span>
+
+                      <span>
+                        <Gauge size={16} />
+                        {Number(
+                          vehicle.mileage ?? 0
+                        ).toLocaleString()}{" "}
+                        km
+                      </span>
+                    </div>
+
+                    <div className="vehicle-footer">
+                      <div className="vehicle-price">
+                        <strong>
+                          {vehicle.pricePerDay ?? "—"} €
+                        </strong>
+
+                        <span>/ dan</span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate(
+                            `/vehicles/${vehicle.id}`
+                          )
+                        }
+                      >
+                        Pogledaj vozilo
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section
+          id="how-it-works"
+          className="how-it-works-section"
+        >
+          <div className="info-section-heading">
+            <p className="section-label">
+              JEDNOSTAVAN PROCES
+            </p>
+
+            <h2>Kako funkcioniše CarShare?</h2>
+
+            <p>
+              Od pronalaska vozila do završetka vožnje u
+              samo nekoliko koraka.
+            </p>
+          </div>
+
+          <div className="how-it-works-grid">
+            <article>
+              <span className="info-step-number">01</span>
+              <SearchIcon size={29} />
+
+              <h3>Pronađite vozilo</h3>
+
+              <p>
+                Unesite lokaciju i željeni termin.
+                Prikazaćemo samo verifikovana vozila koja
+                su slobodna tokom celog perioda.
+              </p>
+            </article>
+
+            <article>
+              <span className="info-step-number">02</span>
+              <CalendarCheck size={29} />
+
+              <h3>Pošaljite zahtev</h3>
+
+              <p>
+                Izaberite vozilo i pošaljite zahtev.
+                Vlasnik pregleda vaš profil i odlučuje o
+                rezervaciji.
+              </p>
+            </article>
+
+            <article>
+              <span className="info-step-number">03</span>
+              <KeyRound size={29} />
+
+              <h3>Preuzmite vozilo</h3>
+
+              <p>
+                Nakon odobrenja i plaćanja evidentirajte
+                primopredaju, uživajte u vožnji i vratite
+                vozilo u dogovorenom terminu.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section
+          id="about"
+          className="about-section"
+        >
+          <div className="about-content">
+            <p className="section-label">
+              O CARSHARE PLATFORMI
+            </p>
+
+            <h2>
+              Lokalna vozila, sigurniji najam i više
+              slobode
+            </h2>
+
+            <p>
+              CarShare povezuje vlasnike vozila sa
+              ljudima kojima je automobil potreban na
+              nekoliko sati ili dana. Platforma
+              omogućava proveru korisnika, upravljanje
+              dostupnošću, rezervacije i praćenje
+              primopredaje na jednom mestu.
+            </p>
+
+            <p>
+              Sistem ocena i trust score pomažu
+              korisnicima da donesu sigurniju odluku pre
+              nego što prihvate saradnju.
+            </p>
+          </div>
+
+          <div className="about-features">
+            <article>
+              <ShieldCheck size={26} />
+              <strong>Verifikovani korisnici</strong>
+              <span>
+                Provera vozačkih dozvola i dokumenata
+                vozila.
+              </span>
+            </article>
+
+            <article>
+              <Car size={26} />
+              <strong>Jednostavna rezervacija</strong>
+              <span>
+                Dostupnost, plaćanje i primopredaja na
+                jednom mestu.
+              </span>
+            </article>
+
+            <article>
+              <Users size={26} />
+              <strong>Zajednica od poverenja</strong>
+              <span>
+                Stvarne ocene i komentari nakon završene
+                saradnje.
+              </span>
+            </article>
           </div>
         </section>
       </main>

@@ -6,15 +6,25 @@ using MediatR;
 namespace CarShare.Application.Features.Handovers.Commands.ConfirmReturn;
 
 public sealed class ConfirmReturnCommandHandler
-    : IRequestHandler<ConfirmReturnCommand, ConfirmReturnResult>
+    : IRequestHandler<
+        ConfirmReturnCommand,
+        ConfirmReturnResult>
 {
     private readonly IRepository<Reservation>
         _reservationRepository;
-    private readonly IRepository<Vehicle> _vehicleRepository;
-    private readonly IRepository<Payment> _paymentRepository;
+
+    private readonly IRepository<Vehicle>
+        _vehicleRepository;
+
+    private readonly IRepository<Payment>
+        _paymentRepository;
+
     private readonly IRepository<RentalHandover>
         _handoverRepository;
-    private readonly ICurrentUserService _currentUserService;
+
+    private readonly ICurrentUserService
+        _currentUserService;
+
     private readonly IUnitOfWork _unitOfWork;
 
     public ConfirmReturnCommandHandler(
@@ -48,7 +58,8 @@ public sealed class ConfirmReturnCommandHandler
                 "Rezervacija nije pronađena.");
         }
 
-        if (reservation.Status != ReservationStatus.Active)
+        if (reservation.Status !=
+            ReservationStatus.Active)
         {
             throw new InvalidOperationException(
                 "Vraćanje je moguće samo za aktivnu rezervaciju.");
@@ -68,7 +79,8 @@ public sealed class ConfirmReturnCommandHandler
         var payment = _paymentRepository
             .Query()
             .FirstOrDefault(payment =>
-                payment.ReservationId == reservation.Id);
+                payment.ReservationId ==
+                    reservation.Id);
 
         if (payment is null)
         {
@@ -79,7 +91,8 @@ public sealed class ConfirmReturnCommandHandler
         var handover = _handoverRepository
             .Query()
             .FirstOrDefault(handover =>
-                handover.ReservationId == reservation.Id);
+                handover.ReservationId ==
+                    reservation.Id);
 
         if (handover is null ||
             !handover.PickupConfirmedByOwner ||
@@ -90,15 +103,21 @@ public sealed class ConfirmReturnCommandHandler
         }
 
         if (handover.PickupMileage.HasValue &&
-            request.ReturnMileage < handover.PickupMileage.Value)
+            request.ReturnMileage <
+                handover.PickupMileage.Value)
         {
             throw new InvalidOperationException(
                 "Kilometraža pri vraćanju ne može biti manja od početne.");
         }
 
-        var currentUserId = _currentUserService.UserId;
-        var isOwner = vehicle.OwnerId == currentUserId;
-        var isRenter = reservation.RenterId == currentUserId;
+        var currentUserId =
+            _currentUserService.UserId;
+
+        var isOwner =
+            vehicle.OwnerId == currentUserId;
+
+        var isRenter =
+            reservation.RenterId == currentUserId;
 
         if (!isOwner && !isRenter)
         {
@@ -106,8 +125,11 @@ public sealed class ConfirmReturnCommandHandler
                 "Nemate pravo da potvrdite vraćanje.");
         }
 
-        handover.ReturnMileage = request.ReturnMileage;
-        handover.ReturnPhotoUrl = request.ReturnPhotoUrl;
+        handover.ReturnMileage =
+            request.ReturnMileage;
+
+        handover.ReturnPhotoUrl =
+            request.ReturnPhotoUrl.Trim();
 
         if (isOwner)
         {
@@ -122,25 +144,30 @@ public sealed class ConfirmReturnCommandHandler
         if (handover.ReturnConfirmedByOwner &&
             handover.ReturnConfirmedByRenter)
         {
-            handover.ReturnConfirmedAtUtc = DateTime.UtcNow;
+            var now = DateTime.UtcNow;
 
-            reservation.Status = ReservationStatus.Completed;
-            reservation.UpdatedAtUtc = DateTime.UtcNow;
+            handover.ReturnConfirmedAtUtc = now;
 
-            vehicle.Status = VehicleStatus.Available;
-            vehicle.UpdatedAtUtc = DateTime.UtcNow;
+            reservation.Status =
+                ReservationStatus.Completed;
 
-            payment.DepositStatus = DepositStatus.Returned;
-            payment.UpdatedAtUtc = DateTime.UtcNow;
+            reservation.UpdatedAtUtc = now;
 
-            _reservationRepository.Update(reservation);
+            vehicle.Status =
+                VehicleStatus.Available;
+
+            vehicle.UpdatedAtUtc = now;
+
+            _reservationRepository.Update(
+                reservation);
+
             _vehicleRepository.Update(vehicle);
-            _paymentRepository.Update(payment);
         }
 
         _handoverRepository.Update(handover);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(
+            cancellationToken);
 
         return new ConfirmReturnResult(
             handover.Id,

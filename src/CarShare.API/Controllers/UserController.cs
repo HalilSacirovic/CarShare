@@ -1,11 +1,11 @@
 ﻿using Asp.Versioning;
+using CarShare.API.Contracts.Users;
+using CarShare.Application.Features.Users.Commands.SubmitDriverLicense;
 using CarShare.Application.Features.Users.Queries.GetMyProfile;
+using CarShare.Application.Features.Users.Queries.GetPublicUserProfile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CarShare.API.Contracts.Users;
-using CarShare.Application.Features.Users.Commands.SubmitDriverLicense;
-
 
 namespace CarShare.API.Controllers;
 
@@ -26,11 +26,31 @@ public sealed class UsersController : ControllerBase
     [ProducesResponseType(
         typeof(UserProfileViewModel),
         StatusCodes.Status200OK)]
-    public async Task<ActionResult<UserProfileViewModel>> GetMe(
-        CancellationToken cancellationToken)
+    public async Task<ActionResult<UserProfileViewModel>>
+        GetMe(
+            CancellationToken cancellationToken)
     {
         var result = await _sender.Send(
             new GetMyProfileQuery(),
+            cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpGet("{userId:guid}/public-profile")]
+    [Authorize(Roles = "Owner,Admin")]
+    [ProducesResponseType(
+        typeof(PublicUserProfileViewModel),
+        StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<
+        ActionResult<PublicUserProfileViewModel>>
+        GetPublicProfile(
+            Guid userId,
+            CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(
+            new GetPublicUserProfileQuery(userId),
             cancellationToken);
 
         return Ok(result);
@@ -41,8 +61,8 @@ public sealed class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SubmitDriverLicense(
-    SubmitDriverLicenseRequest request,
-    CancellationToken cancellationToken)
+        SubmitDriverLicenseRequest request,
+        CancellationToken cancellationToken)
     {
         await _sender.Send(
             new SubmitDriverLicenseCommand(

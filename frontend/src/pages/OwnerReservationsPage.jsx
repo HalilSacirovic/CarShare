@@ -4,6 +4,8 @@ import {
   ArrowLeft,
   CalendarDays,
   Check,
+  Eye,
+  Image as ImageIcon,
   Mail,
   User,
   X,
@@ -12,6 +14,7 @@ import {
 import api from "../api/api";
 import HandoverForm from "../components/HandoverForm";
 import DisputeForm from "../components/DisputeForm";
+import "./OwnerHandoverPhotos.css";
 
 const statusData = {
   0: {
@@ -132,8 +135,8 @@ function OwnerReservationsPage() {
           <h1>Rezervacije vlasnika</h1>
 
           <p>
-            Pregledajte zahteve, potvrdite primopredaju i
-            pratite završene rezervacije.
+            Pregledajte profil renter-a, fotografije
+            primopredaje i status rezervacije.
           </p>
         </div>
 
@@ -162,6 +165,10 @@ function OwnerReservationsPage() {
             const status =
               statusData[reservation.status] ??
               statusData[0];
+
+            const hasHandoverPhotos =
+              Boolean(reservation.pickupPhotoUrl) ||
+              Boolean(reservation.returnPhotoUrl);
 
             return (
               <article
@@ -194,7 +201,7 @@ function OwnerReservationsPage() {
                       .toUpperCase()}
                   </div>
 
-                  <div>
+                  <div className="renter-details">
                     <strong>
                       {reservation.renterName}
                     </strong>
@@ -204,6 +211,20 @@ function OwnerReservationsPage() {
                       {reservation.renterEmail}
                     </span>
                   </div>
+
+                  <button
+                    type="button"
+                    className="renter-profile-button"
+                    disabled={!reservation.renterId}
+                    onClick={() =>
+                      navigate(
+                        `/users/${reservation.renterId}`
+                      )
+                    }
+                  >
+                    <Eye size={17} />
+                    Pogledaj profil
+                  </button>
                 </div>
 
                 <div className="owner-reservation-dates">
@@ -240,6 +261,80 @@ function OwnerReservationsPage() {
                     {reservation.travelPurpose}
                   </span>
                 </div>
+
+                {hasHandoverPhotos && (
+                  <section className="handover-photos">
+                    <h3>
+                      <ImageIcon size={18} />
+                      Fotografije primopredaje
+                    </h3>
+
+                    <div className="handover-photo-list">
+                      {reservation.pickupPhotoUrl && (
+                        <a
+                          href={
+                            reservation.pickupPhotoUrl
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <ImageIcon size={17} />
+
+                          <span>
+                            Fotografija preuzimanja
+
+                            {reservation.pickupMileage !=
+                              null && (
+                              <small>
+                                Kilometraža:{" "}
+                                {
+                                  reservation.pickupMileage
+                                }{" "}
+                                km
+                              </small>
+                            )}
+                          </span>
+                        </a>
+                      )}
+
+                      {reservation.returnPhotoUrl && (
+                        <a
+                          href={
+                            reservation.returnPhotoUrl
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <ImageIcon size={17} />
+
+                          <span>
+                            Fotografija vraćanja
+
+                            {reservation.returnMileage !=
+                              null && (
+                              <small>
+                                Kilometraža:{" "}
+                                {
+                                  reservation.returnMileage
+                                }{" "}
+                                km
+                              </small>
+                            )}
+                          </span>
+                        </a>
+                      )}
+                    </div>
+
+                    {reservation.returnConfirmedByRenter &&
+                      !reservation.returnConfirmedByOwner && (
+                        <p className="return-awaiting-owner">
+                          Renter je potvrdio vraćanje.
+                          Pregledajte fotografiju pre
+                          potvrde sa vaše strane.
+                        </p>
+                      )}
+                  </section>
+                )}
 
                 {reservation.status === 0 && (
                   <div className="owner-actions">

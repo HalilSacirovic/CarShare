@@ -1,0 +1,72 @@
+.handover-photos {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #e2ddcf;
+  border-radius: 14px;
+  background: #f8f5ed;
+}
+
+.handover-photos h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  color: #263b30;
+  font-size: 16px;
+}
+
+.handover-photo-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.handover-photo-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px;
+  border: 1px solid #cfd8d1;
+  border-radius: 10px;
+  color: #285440;
+  background: #fffdf8;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.handover-photo-list a:hover {
+  color: #fff;
+  background: #285440;
+}
+
+.handover-photo-list a span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.handover-photo-list a small {
+  color: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+.return-awaiting-owner {
+  margin: 13px 0 0;
+  padding: 11px;
+  border-radius: 9px;
+  color: #7a5b19;
+  background: #fff1c9;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+  .handover-photo-list {
+    grid-template-columns: 1fr;
+  }
+}

@@ -38,5 +38,7 @@ public sealed class VehicleViewModel
 
     public VerificationStatus VerificationStatus { get; set; }
 
+    public decimal OwnerAverageRating { get; set; }
+
     public List<string> PhotoUrls { get; set; } = new();
 }

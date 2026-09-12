@@ -38,7 +38,7 @@ public sealed class User : BaseEntity
 
     public ICollection<Review> ReviewsWritten { get; set; }
     = new List<Review>();
-
+    
     public ICollection<Review> ReviewsReceived { get; set; }
         = new List<Review>();
 

@@ -16,4 +16,21 @@ public sealed record ReservationViewModel(
     ReservationStatus Status,
     DateTime HoldExpiresAtUtc,
     decimal RentalAmount,
-    decimal DepositAmount);
+    decimal DepositAmount)
+{
+    public int? PickupMileage { get; init; }
+
+    public string? PickupPhotoUrl { get; init; }
+
+    public bool PickupConfirmedByOwner { get; init; }
+
+    public bool PickupConfirmedByRenter { get; init; }
+
+    public int? ReturnMileage { get; init; }
+
+    public string? ReturnPhotoUrl { get; init; }
+
+    public bool ReturnConfirmedByOwner { get; init; }
+
+    public bool ReturnConfirmedByRenter { get; init; }
+}

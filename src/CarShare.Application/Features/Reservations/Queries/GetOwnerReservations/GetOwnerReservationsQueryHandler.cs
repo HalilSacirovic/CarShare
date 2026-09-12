@@ -12,13 +12,20 @@ public sealed class GetOwnerReservationsQueryHandler
 {
     private readonly IRepository<Reservation>
         _reservationRepository;
-    private readonly ICurrentUserService _currentUserService;
+
+    private readonly IRepository<RentalHandover>
+        _handoverRepository;
+
+    private readonly ICurrentUserService
+        _currentUserService;
 
     public GetOwnerReservationsQueryHandler(
         IRepository<Reservation> reservationRepository,
+        IRepository<RentalHandover> handoverRepository,
         ICurrentUserService currentUserService)
     {
         _reservationRepository = reservationRepository;
+        _handoverRepository = handoverRepository;
         _currentUserService = currentUserService;
     }
 
@@ -28,30 +35,81 @@ public sealed class GetOwnerReservationsQueryHandler
     {
         var ownerId = _currentUserService.UserId;
 
-        var reservations = _reservationRepository
-            .Query()
-            .Where(reservation =>
-                reservation.Vehicle.OwnerId == ownerId)
-            .OrderByDescending(reservation =>
-                reservation.CreatedAtUtc)
-            .Select(reservation =>
-    new ReservationViewModel(
-        reservation.Id,
-        reservation.VehicleId,
-        reservation.Vehicle.Brand,
-        reservation.Vehicle.Model,
-        reservation.RenterId,
-        reservation.Renter.FirstName +
-            " " +
-            reservation.Renter.LastName,
-        reservation.Renter.Email,
-        reservation.StartDateTimeUtc,
-        reservation.EndDateTimeUtc,
-        reservation.TravelPurpose,
-        reservation.Status,
-        reservation.HoldExpiresAtUtc,
-        reservation.RentalAmount,
-        reservation.DepositAmount)).ToList();
+        var reservations =
+            (
+                from reservation
+                    in _reservationRepository.Query()
+
+                join handover
+                    in _handoverRepository.Query()
+                    on reservation.Id
+                    equals handover.ReservationId
+                    into handoverGroup
+
+                from handover
+                    in handoverGroup.DefaultIfEmpty()
+
+                where reservation.Vehicle.OwnerId ==
+                    ownerId
+
+                orderby reservation.CreatedAtUtc descending
+
+                select new ReservationViewModel(
+                    reservation.Id,
+                    reservation.VehicleId,
+                    reservation.Vehicle.Brand,
+                    reservation.Vehicle.Model,
+                    reservation.RenterId,
+                    reservation.Renter.FirstName +
+                        " " +
+                        reservation.Renter.LastName,
+                    reservation.Renter.Email,
+                    reservation.StartDateTimeUtc,
+                    reservation.EndDateTimeUtc,
+                    reservation.TravelPurpose,
+                    reservation.Status,
+                    reservation.HoldExpiresAtUtc,
+                    reservation.RentalAmount,
+                    reservation.DepositAmount)
+                {
+                    PickupMileage =
+                        handover == null
+                            ? null
+                            : handover.PickupMileage,
+
+                    PickupPhotoUrl =
+                        handover == null
+                            ? null
+                            : handover.PickupPhotoUrl,
+
+                    PickupConfirmedByOwner =
+                        handover != null &&
+                        handover.PickupConfirmedByOwner,
+
+                    PickupConfirmedByRenter =
+                        handover != null &&
+                        handover.PickupConfirmedByRenter,
+
+                    ReturnMileage =
+                        handover == null
+                            ? null
+                            : handover.ReturnMileage,
+
+                    ReturnPhotoUrl =
+                        handover == null
+                            ? null
+                            : handover.ReturnPhotoUrl,
+
+                    ReturnConfirmedByOwner =
+                        handover != null &&
+                        handover.ReturnConfirmedByOwner,
+
+                    ReturnConfirmedByRenter =
+                        handover != null &&
+                        handover.ReturnConfirmedByRenter
+                }
+            )
+            .ToList();
 
         return Task.FromResult<
             IReadOnlyList<ReservationViewModel>>(

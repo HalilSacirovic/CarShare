@@ -10,20 +10,24 @@ public sealed class CreateReservationCommandHandler
         CreateReservationCommand,
         CreateReservationResult>
 {
+    private readonly IRepository<User> _userRepository;
     private readonly IRepository<Vehicle> _vehicleRepository;
-    private readonly IRepository<Reservation> _reservationRepository;
+    private readonly IRepository<Reservation>
+        _reservationRepository;
     private readonly IRepository<AvailabilityBlock>
         _availabilityRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateReservationCommandHandler(
+        IRepository<User> userRepository,
         IRepository<Vehicle> vehicleRepository,
         IRepository<Reservation> reservationRepository,
         IRepository<AvailabilityBlock> availabilityRepository,
         ICurrentUserService currentUserService,
         IUnitOfWork unitOfWork)
     {
+        _userRepository = userRepository;
         _vehicleRepository = vehicleRepository;
         _reservationRepository = reservationRepository;
         _availabilityRepository = availabilityRepository;
@@ -35,6 +39,30 @@ public sealed class CreateReservationCommandHandler
         CreateReservationCommand request,
         CancellationToken cancellationToken)
     {
+        var renter = _userRepository
+            .Query()
+            .FirstOrDefault(user =>
+                user.Id == _currentUserService.UserId);
+
+        if (renter is null)
+        {
+            throw new UnauthorizedAccessException(
+                "Prijavljeni korisnik nije pronađen.");
+        }
+
+        if (!renter.IsRenter)
+        {
+            throw new InvalidOperationException(
+                "Samo renter može rezervisati vozilo.");
+        }
+
+        if (renter.DriverVerificationStatus !=
+            VerificationStatus.Approved)
+        {
+            throw new InvalidOperationException(
+                "Morate imati odobrenu vozačku dozvolu pre rezervacije vozila.");
+        }
+
         var vehicle = _vehicleRepository
             .Query()
             .FirstOrDefault(vehicle =>
@@ -58,12 +86,21 @@ public sealed class CreateReservationCommandHandler
                 "Vozilo trenutno nije dostupno.");
         }
 
+        if (vehicle.VerificationStatus !=
+            VerificationStatus.Approved)
+        {
+            throw new InvalidOperationException(
+                "Vozilo još uvek nije verifikovano.");
+        }
+
         var hasAvailabilityBlock = _availabilityRepository
             .Query()
             .Any(block =>
                 block.VehicleId == request.VehicleId &&
-                block.StartDateTimeUtc < request.EndDateTimeUtc &&
-                block.EndDateTimeUtc > request.StartDateTimeUtc);
+                block.StartDateTimeUtc <
+                    request.EndDateTimeUtc &&
+                block.EndDateTimeUtc >
+                    request.StartDateTimeUtc);
 
         if (hasAvailabilityBlock)
         {
@@ -76,7 +113,8 @@ public sealed class CreateReservationCommandHandler
         var hasReservationOverlap = _reservationRepository
             .Query()
             .Any(reservation =>
-                reservation.VehicleId == request.VehicleId &&
+                reservation.VehicleId ==
+                    request.VehicleId &&
                 reservation.StartDateTimeUtc <
                     request.EndDateTimeUtc &&
                 reservation.EndDateTimeUtc >
@@ -107,7 +145,7 @@ public sealed class CreateReservationCommandHandler
         var reservation = new Reservation
         {
             VehicleId = request.VehicleId,
-            RenterId = _currentUserService.UserId,
+            RenterId = renter.Id,
             StartDateTimeUtc = request.StartDateTimeUtc,
             EndDateTimeUtc = request.EndDateTimeUtc,
             TravelPurpose = request.TravelPurpose.Trim(),
@@ -123,7 +161,8 @@ public sealed class CreateReservationCommandHandler
             reservation,
             cancellationToken);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(
+            cancellationToken);
 
         return new CreateReservationResult(
             reservation.Id,

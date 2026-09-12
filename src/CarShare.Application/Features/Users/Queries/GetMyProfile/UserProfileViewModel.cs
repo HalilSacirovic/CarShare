@@ -15,4 +15,12 @@ public sealed record UserProfileViewModel(
     bool IsAdmin,
     decimal AverageRating,
     decimal TrustScore,
-    DateTime RegisteredAtUtc);
+    DateTime RegisteredAtUtc,
+    IReadOnlyList<ReceivedReviewViewModel> ReceivedReviews);
+
+public sealed record ReceivedReviewViewModel(
+    Guid ReviewId,
+    string ReviewerName,
+    int Rating,
+    string? Comment,
+    DateTime CreatedAtUtc);

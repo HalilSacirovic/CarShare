@@ -1,0 +1,253 @@
+.public-profile-page {
+  min-height: 100vh;
+  background: #f5f1e8;
+  color: #1d2923;
+}
+
+.public-profile-container {
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 70px 0 100px;
+}
+
+.public-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 32px;
+  border: 1px solid #e5dfd2;
+  border-radius: 22px;
+  background: #fffdf8;
+  box-shadow: 0 18px 45px
+    rgba(39, 56, 47, 0.08);
+}
+
+.public-profile-avatar {
+  display: grid;
+  width: 105px;
+  height: 105px;
+  flex: 0 0 105px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #234f3c;
+  font-family: Georgia, serif;
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.public-profile-identity h1 {
+  margin: 7px 0 14px;
+  font-family: Georgia, serif;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1;
+}
+
+.driver-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.driver-status.verified {
+  color: #24553e;
+  background: #e4f1e8;
+}
+
+.driver-status.unverified {
+  color: #a34833;
+  background: #fae8e2;
+}
+
+.public-profile-statistics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 24px 0 50px;
+}
+
+.public-profile-statistics article {
+  display: flex;
+  min-height: 145px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 25px;
+  border: 1px solid #e5dfd2;
+  border-radius: 18px;
+  background: #fffdf8;
+}
+
+.public-profile-statistics svg {
+  color: #b28a3d;
+}
+
+.public-profile-statistics span {
+  color: #737970;
+  font-size: 14px;
+}
+
+.public-profile-statistics strong {
+  font-family: Georgia, serif;
+  font-size: 25px;
+}
+
+.public-reviews-section {
+  padding: 32px;
+  border: 1px solid #e5dfd2;
+  border-radius: 22px;
+  background: #fffdf8;
+}
+
+.public-reviews-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.public-reviews-heading h2 {
+  margin: 6px 0 0;
+  font-family: Georgia, serif;
+  font-size: 34px;
+}
+
+.public-reviews-heading > span {
+  color: #70776f;
+}
+
+.public-reviews-list {
+  display: grid;
+  gap: 15px;
+}
+
+.public-review-card {
+  padding: 22px;
+  border: 1px solid #e9e3d7;
+  border-radius: 15px;
+  background: #f8f5ed;
+}
+
+.public-review-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.public-review-top > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.public-review-top span {
+  color: #7d817c;
+  font-size: 13px;
+}
+
+.public-review-stars {
+  display: flex;
+  gap: 3px;
+  color: #b48b3b;
+}
+
+.public-review-card p {
+  margin: 17px 0 0;
+  color: #5f675f;
+  line-height: 1.65;
+}
+
+.public-reviews-empty {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  color: #717870;
+}
+
+.public-reviews-empty h3 {
+  margin: 13px 0 5px;
+  color: #26352d;
+}
+
+.public-reviews-empty p {
+  margin: 0;
+}
+
+.renter-profile-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 10px 14px;
+  border: 1px solid #285440;
+  border-radius: 10px;
+  color: #285440;
+  background: #fffdf8;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.renter-profile-button:hover {
+  color: #fff;
+  background: #285440;
+}
+
+.renter-profile-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.renter-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+@media (max-width: 720px) {
+  .public-profile-container {
+    width: min(100% - 24px, 1100px);
+    padding-top: 35px;
+  }
+
+  .public-profile-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .public-profile-statistics {
+    grid-template-columns: 1fr;
+  }
+
+  .public-reviews-section {
+    padding: 22px;
+  }
+
+  .public-reviews-heading,
+  .public-review-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .renter-information {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .renter-profile-button {
+    width: 100%;
+    margin-left: 0;
+  }
+}

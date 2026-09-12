@@ -1,0 +1,99 @@
+.profile-reviews-section {
+  margin-top: 28px;
+  padding: 30px;
+  border: 1px solid #e3ddcf;
+  border-radius: 20px;
+  background: #fffdf8;
+  box-shadow: 0 15px 35px
+    rgba(39, 56, 47, 0.06);
+}
+
+.profile-reviews-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.profile-reviews-heading h2 {
+  margin: 6px 0 0;
+  font-family: Georgia, serif;
+  font-size: 32px;
+}
+
+.profile-reviews-heading > span {
+  color: #727970;
+}
+
+.profile-reviews-list {
+  display: grid;
+  gap: 14px;
+}
+
+.profile-review-card {
+  padding: 20px;
+  border: 1px solid #e6e0d4;
+  border-radius: 14px;
+  background: #f8f5ed;
+}
+
+.profile-review-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.profile-review-top > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-review-top span {
+  color: #7b817b;
+  font-size: 13px;
+}
+
+.profile-review-stars {
+  display: flex;
+  gap: 3px;
+  color: #b28a3d;
+}
+
+.profile-review-card p {
+  margin: 16px 0 0;
+  color: #626a63;
+  line-height: 1.65;
+}
+
+.profile-reviews-empty {
+  display: grid;
+  min-height: 200px;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  color: #737a73;
+}
+
+.profile-reviews-empty h3 {
+  margin: 12px 0 5px;
+  color: #25372d;
+}
+
+.profile-reviews-empty p {
+  margin: 0;
+}
+
+@media (max-width: 650px) {
+  .profile-reviews-section {
+    padding: 21px;
+  }
+
+  .profile-reviews-heading,
+  .profile-review-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

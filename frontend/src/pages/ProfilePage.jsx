@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   Car,
   Mail,
+  MessageSquare,
   ShieldCheck,
   Star,
   User,
@@ -11,6 +12,7 @@ import {
 
 import api from "../api/api";
 import DriverLicenseForm from "../components/DriverLicenseForm";
+import "./ProfileReviews.css";
 
 const verificationStatuses = {
   0: {
@@ -31,6 +33,12 @@ const verificationStatuses = {
   },
 };
 
+function formatDate(date) {
+  return new Intl.DateTimeFormat("sr-RS", {
+    dateStyle: "medium",
+  }).format(new Date(date));
+}
+
 function ProfilePage() {
   const navigate = useNavigate();
 
@@ -41,10 +49,16 @@ function ProfilePage() {
   useEffect(() => {
     const loadProfile = async () => {
       try {
+        setError("");
+
         const response = await api.get("/users/me");
+
         setProfile(response.data);
-      } catch {
-        setError("Nije moguće učitati profil.");
+      } catch (requestError) {
+        setError(
+          requestError.response?.data?.detail ||
+            "Nije moguće učitati profil."
+        );
       } finally {
         setIsLoading(false);
       }
@@ -66,7 +80,10 @@ function ProfilePage() {
       <div className="details-status">
         <p>{error}</p>
 
-        <button onClick={() => navigate("/vehicles")}>
+        <button
+          type="button"
+          onClick={() => navigate("/vehicles")}
+        >
           Nazad
         </button>
       </div>
@@ -78,10 +95,18 @@ function ProfilePage() {
       profile.driverVerificationStatus
     ] ?? verificationStatuses[0];
 
+  const averageRating = Number(
+    profile.averageRating ?? 0
+  );
+
+  const receivedReviews =
+    profile.receivedReviews ?? [];
+
   return (
     <div className="profile-page">
       <header className="details-header">
         <button
+          type="button"
           className="brand"
           onClick={() => navigate("/vehicles")}
         >
@@ -90,6 +115,7 @@ function ProfilePage() {
         </button>
 
         <button
+          type="button"
           className="back-button"
           onClick={() => navigate("/vehicles")}
         >
@@ -106,7 +132,9 @@ function ProfilePage() {
           </div>
 
           <div>
-            <p className="section-label">CARSHARE PROFIL</p>
+            <p className="section-label">
+              CARSHARE PROFIL
+            </p>
 
             <h1>
               {profile.firstName} {profile.lastName}
@@ -128,7 +156,8 @@ function ProfilePage() {
 
               <span>
                 <small>Ime i prezime</small>
-                {profile.firstName} {profile.lastName}
+                {profile.firstName}{" "}
+                {profile.lastName}
               </span>
             </div>
 
@@ -170,19 +199,25 @@ function ProfilePage() {
             <div className="score-grid">
               <div>
                 <Star size={25} />
+
                 <strong>
-                  {Number(
-                    profile.averageRating
-                  ).toFixed(1)}
+                  {averageRating > 0
+                    ? averageRating.toFixed(1)
+                    : "—"}
                 </strong>
+
                 <span>Prosečna ocena</span>
               </div>
 
               <div>
                 <ShieldCheck size={25} />
+
                 <strong>
-                  {Number(profile.trustScore).toFixed(0)}
+                  {Number(
+                    profile.trustScore ?? 0
+                  ).toFixed(0)}
                 </strong>
+
                 <span>Trust score</span>
               </div>
             </div>
@@ -193,29 +228,29 @@ function ProfilePage() {
               <h2>Vozačka dozvola</h2>
 
               <p>
-                Status provere vozačke dozvole na CarShare
-                platformi.
+                Status provere vozačke dozvole na
+                CarShare platformi.
               </p>
             </div>
 
             <span
               className={`verification-badge ${verification.className}`}
             >
-
               {verification.text}
             </span>
+
             {(profile.driverVerificationStatus === 0 ||
-  profile.driverVerificationStatus === 3) && (
-  <DriverLicenseForm
-    onSubmitted={(driverLicenseUrl) =>
-      setProfile((currentProfile) => ({
-        ...currentProfile,
-        driverLicenseUrl,
-        driverVerificationStatus: 1,
-      }))
-    }
-  />
-)}
+              profile.driverVerificationStatus === 3) && (
+              <DriverLicenseForm
+                onSubmitted={(driverLicenseUrl) =>
+                  setProfile((currentProfile) => ({
+                    ...currentProfile,
+                    driverLicenseUrl,
+                    driverVerificationStatus: 1,
+                  }))
+                }
+              />
+            )}
 
             {profile.driverLicenseUrl && (
               <a
@@ -227,6 +262,86 @@ function ProfilePage() {
               </a>
             )}
           </article>
+        </section>
+
+        <section className="profile-reviews-section">
+          <div className="profile-reviews-heading">
+            <div>
+              <p className="section-label">
+                VAŠA REPUTACIJA
+              </p>
+
+              <h2>Ocene i komentari</h2>
+            </div>
+
+            <span>
+              {receivedReviews.length}{" "}
+              {receivedReviews.length === 1
+                ? "ocena"
+                : "ocena"}
+            </span>
+          </div>
+
+          {receivedReviews.length === 0 ? (
+            <div className="profile-reviews-empty">
+              <MessageSquare size={35} />
+
+              <h3>Još nemate komentare</h3>
+
+              <p>
+                Ocene i komentari će se pojaviti nakon
+                završene rezervacije.
+              </p>
+            </div>
+          ) : (
+            <div className="profile-reviews-list">
+              {receivedReviews.map((review) => (
+                <article
+                  className="profile-review-card"
+                  key={review.reviewId}
+                >
+                  <div className="profile-review-top">
+                    <div>
+                      <strong>
+                        {review.reviewerName}
+                      </strong>
+
+                      <span>
+                        {formatDate(
+                          review.createdAtUtc
+                        )}
+                      </span>
+                    </div>
+
+                    <div
+                      className="profile-review-stars"
+                      aria-label={`Ocena ${review.rating} od 5`}
+                    >
+                      {Array.from(
+                        { length: 5 },
+                        (_, index) => (
+                          <Star
+                            key={index}
+                            size={18}
+                            fill={
+                              index < review.rating
+                                ? "currentColor"
+                                : "none"
+                            }
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  <p>
+                    {review.comment?.trim() ||
+                      "Korisnik nije ostavio komentar."}
+                  </p>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>

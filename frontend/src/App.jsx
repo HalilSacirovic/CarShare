@@ -20,6 +20,7 @@ import VehicleAvailabilityPage from "./pages/VehicleAvailabilityPage";
 import MyReservationsPage from "./pages/MyReservationsPage";
 import OwnerReservationsPage from "./pages/OwnerReservationsPage";
 import ProfilePage from "./pages/ProfilePage";
+import PublicUserProfilePage from "./pages/PublicUserProfilePage";
 import AdminVehicleVerificationsPage from "./pages/AdminVehicleVerificationsPage";
 import AdminDriverVerificationsPage from "./pages/AdminDriverVerificationsPage";
 import AdminDisputesPage from "./pages/AdminDisputesPage";
@@ -33,7 +34,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
 
         <Route
           path="/register"
@@ -91,6 +95,19 @@ function App() {
           element={
             isLoggedIn ? (
               <ProfilePage />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/users/:userId"
+          element={
+            isLoggedIn ? (
+              <RoleProtectedRoute requiredRole="isOwner">
+                <PublicUserProfilePage />
+              </RoleProtectedRoute>
             ) : (
               <Navigate to="/login" replace />
             )
