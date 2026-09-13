@@ -2839,3 +2839,25 @@ form.search-panel .search-button,
   color: #fff;
   background: #b95f3d;
 }
+
+/* Popravka administratorskih kartica za verifikaciju vozila */
+
+.admin-verification-grid {
+  align-items: start;
+}
+
+.admin-verification-grid .verification-request-card {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.admin-verification-grid .verification-request-top {
+  width: 100%;
+  box-sizing: border-box;
+}
