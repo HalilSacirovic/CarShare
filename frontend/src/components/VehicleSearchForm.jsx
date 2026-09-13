@@ -136,7 +136,7 @@ export default function VehicleSearchForm({
           endDateTimeUtc: endDate.toISOString(),
           latitude: coordinates.latitude,
           longitude: coordinates.longitude,
-          radiusKilometers: 200,
+          radiusKilometers: 30,
         },
       });
 
